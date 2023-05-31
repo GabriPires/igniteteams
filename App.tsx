@@ -1,3 +1,4 @@
+import { StatusBar } from 'react-native'
 import theme from '@theme/index'
 import {
   useFonts,
@@ -6,8 +7,7 @@ import {
 } from '@expo-google-fonts/roboto'
 import { ThemeProvider } from 'styled-components/native'
 import { Loading } from '@components/Loading'
-import { StatusBar } from 'react-native'
-import { Players } from '@screens/Players'
+import { Routes } from '@routes/index'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -18,7 +18,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar barStyle={'light-content'} translucent />
-      {fontsLoaded ? <Players /> : <Loading />}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </ThemeProvider>
   )
 }
