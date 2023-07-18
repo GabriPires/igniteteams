@@ -9,8 +9,8 @@ import { PlayerCard } from '@components/PlayerCard'
 import { useRoute } from '@react-navigation/native'
 import { addPlayerByGroup } from '@storage/players/player-add-by-group'
 import { AppError } from '@utils/AppError'
-import { useEffect, useState } from 'react'
-import { Alert, FlatList } from 'react-native'
+import { useEffect, useRef, useState } from 'react'
+import { Alert, FlatList, TextInput } from 'react-native'
 import { Container, Form, HeaderList, PlayersCount } from './styles'
 import { getPlayersByGroupAndTeam } from '@storage/players/player-get-by-group-and-team'
 import { PlayerStorageDTO } from '@storage/players/player-storage-dto'
@@ -23,6 +23,8 @@ export function Players() {
   const [newPlayerName, setNewPlayerName] = useState<string>('')
   const [team, setTeam] = useState<string>('Time A')
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([])
+
+  const newPlayerNameInputRef = useRef<TextInput>(null)
 
   const { params } = useRoute()
   const { group } = params as RouteParams
@@ -42,6 +44,7 @@ export function Players() {
 
     try {
       await addPlayerByGroup(newPlayer, group).then(() => setNewPlayerName(''))
+      newPlayerNameInputRef.current?.blur()
       await fetchPlayersByTeam()
     } catch (error) {
       if (error instanceof AppError) {
@@ -81,10 +84,11 @@ export function Players() {
 
       <Form>
         <Input
+          inputRef={newPlayerNameInputRef}
           placeholder={'Nome da pessoa'}
-          autoCorrect={false}
           value={newPlayerName}
           onChangeText={setNewPlayerName}
+          returnKeyType={'send'}
         />
         <ButtonIcon icon={'add'} onPress={handleAddPlayer} />
       </Form>
