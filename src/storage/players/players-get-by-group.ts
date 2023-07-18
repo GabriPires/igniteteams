@@ -11,6 +11,7 @@ export async function getAllPlayersByGroup(group: string) {
     if (!players) {
       return []
     }
+
     return players
   } catch (error) {
     throw error
